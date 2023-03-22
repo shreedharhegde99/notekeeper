@@ -1,0 +1,71 @@
+.addNoteMain {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background-color: #5e99ff;
+}
+
+.formContainer {
+  box-sizing: border-box;
+  width: 90%;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+}
+.formContainer > div:nth-child(1) {
+  width: max-content;
+  font-size: 18px;
+  text-align: right;
+  cursor: pointer;
+  background-color: #d0d0d0;
+  margin-left: auto;
+  padding: 5px 10px;
+}
+
+.formContainer > div:nth-child(2) {
+  font-size: 20px;
+  text-align: center;
+  padding: 20px 0px;
+}
+
+.addNoteForm,
+.addNoteForm > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.addNoteForm {
+  gap: 20px;
+}
+
+.addNoteForm input {
+  min-height: 25px;
+  outline: none;
+  border: 1px solid #cccccc;
+  border-radius: 7px;
+}
+
+input[type="submit"] {
+  cursor: pointer;
+  color: white;
+  background-color: #ff7644;
+  border: none;
+  padding: 10px 0px;
+  font-weight: bold;
+}
+
+/* media queries */
+
+@media screen and (min-width: 786px) {
+  .formContainer {
+    max-width: 450px;
+  }
+}
