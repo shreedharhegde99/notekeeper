@@ -2,8 +2,8 @@ import { Fragment, useState } from "react";
 import style from "./styles/addTask.module.css";
 const { addNoteMain, formContainer, addNoteForm } = style;
 
-export default function AddTask({ onOpen }) {
-  const initData = { title: "", tag: "", content: "" };
+export default function AddTask({ onOpen, refreshData }) {
+  const initData = { title: "", tag: "", content: "", pinned: false };
   const [noteData, setNoteData] = useState(initData);
 
   // handle input change
@@ -12,23 +12,31 @@ export default function AddTask({ onOpen }) {
     setNoteData({ ...noteData, [name]: value });
   };
 
+  const updatePinned = () => {
+    setNoteData({ ...noteData, pinned: !noteData.pinned });
+  };
+
   // handle note add
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { title, tag, content } = noteData;
-    const payload = { ...noteData, pinned: false };
-    if (title && tag && content) {
-      const res = fetch("url", {
-        method: "post",
-        body: JSON.stringify(payload),
-        headers: {
-          "content-type": "application/json",
-        },
-      })
-        .then((e) => e.json())
-        .catch((e) => console.log(e.message));
-      console.log(`=>  res:`, res);
+    try {
+      const { title, tag, content } = noteData;
+
+      if (title && tag && content) {
+        const res = await fetch("http://localhost:3001/notes", {
+          method: "POST",
+          body: JSON.stringify(noteData),
+          headers: {
+            "content-type": "application/json",
+          },
+        }).then((e) => e.json());
+      }
+
+      refreshData();
+    } catch (e) {
+      console.log("ERROR IN FETCHING", e.message);
     }
+    onOpen(false);
   };
 
   return (
@@ -66,6 +74,14 @@ export default function AddTask({ onOpen }) {
                 value={noteData.content}
                 onChange={handleChange}
               />
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                checked={noteData.pinned}
+                onChange={updatePinned}
+              />
+              <label htmlFor="pinned">Pinned</label>
             </div>
             <div>
               <input type="submit" value="Add note" />
