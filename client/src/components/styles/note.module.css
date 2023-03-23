@@ -1,0 +1,9 @@
+.noteCard {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px gray;
+  background-color: #fab120b9;
+  cursor: pointer;
+}
