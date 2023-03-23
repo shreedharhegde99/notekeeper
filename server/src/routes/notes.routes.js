@@ -6,7 +6,7 @@ const updateNote = require("../controllers/updateNote");
 
 app.get("/", async (req, res) => {
   try {
-    const { page } = req.body;
+    const { page } = req.query;
     let skipCount = (page - 1) * 6;
     let data = await Notes.find({})
       .sort({ pinned: -1 })
