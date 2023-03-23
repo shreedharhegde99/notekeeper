@@ -1,0 +1,48 @@
+.pageTitle {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #cecece;
+  background-color: #b9f0f2;
+}
+
+.notesContainer {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 25px;
+  gap: 20px;
+}
+
+.navBtnContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.navBtnContainer > button {
+  outline: none;
+  border: 1px solid #cecece;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.navBtnContainer > button:disabled {
+  cursor: not-allowed;
+}
+
+@media screen and (min-width: 768px) {
+  .notesContainer {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .notesContainer {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}

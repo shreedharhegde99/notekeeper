@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import AddTask from "./components/AddTask";
+import AddTaskBtn from "./components/AddTaskBtn";
+import useFetchData from "./hooks/useFechData";
+import style from "./App.module.css";
+import NoteCard from "./components/NoteCard";
+const { pageTitle, notesContainer, noteCard, navBtnContainer } = style;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [openForm, setOpenForm] = useState(false);
+  const [page, setPage] = useState(1);
+  const [data, getNotes] = useFetchData();
+
+  const handleOpenForm = (val) => {
+    setOpenForm(val);
+  };
+
+  const refetchNotes = () => {
+    getNotes(page);
+  };
+
+  useEffect(() => {
+    refetchNotes();
+  }, [page]);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div>
+      <header>
+        <div className={pageTitle}>Note-Keeper</div>
+      </header>
+      <div className={navBtnContainer}>
+        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Prev
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <span>{page} </span>
+        <button disabled={data.length < 6} onClick={() => setPage(page + 1)}>
+          Next
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      <div className={notesContainer}>
+        {data.map((note) => (
+          <NoteCard
+            key={note._id}
+            className={noteCard}
+            note={note}
+            refreshData={refetchNotes}
+          />
+        ))}
+      </div>
+
+      <AddTaskBtn onOpen={handleOpenForm} />
+      {openForm && (
+        <AddTask onOpen={handleOpenForm} refreshData={refetchNotes} />
+      )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
