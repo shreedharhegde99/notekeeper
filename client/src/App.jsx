@@ -5,7 +5,8 @@ import useFetchData from "./hooks/useFechData";
 import style from "./App.module.css";
 import NoteCard from "./components/NoteCard";
 import UserAlert from "./components/UserAlert";
-const { pageTitle, notesContainer, noteCard, navBtnContainer } = style;
+const { pageTitle, notesContainer, noteCard, navBtnContainer, emptyNotes } =
+  style;
 
 function App() {
   const [openForm, setOpenForm] = useState(false);
@@ -56,6 +57,11 @@ function App() {
           />
         ))}
       </div>
+      {!data.length && page === 1 && (
+        <div className={emptyNotes}>
+          Nothing here add a Note to get started..
+        </div>
+      )}
 
       <UserAlert message={message} />
       <AddTaskBtn onOpen={handleOpenForm} />
