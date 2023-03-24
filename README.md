@@ -2,7 +2,7 @@
 
 ### A notekeeper app for keeping a note of all important things
 
-Fronted deployed link https://notekeeper-client.onrender.com/
+Frontend deployed link https://notekeeper-client.onrender.com/
 
 Backend deployed link https://notekeeper-server.onrender.com/
 
