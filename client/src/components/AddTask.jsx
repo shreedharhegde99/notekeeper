@@ -1,8 +1,9 @@
 import { Fragment, useState } from "react";
+import backendURL from "../network/network";
 import style from "./styles/addTask.module.css";
 const { addNoteMain, formContainer, addNoteForm } = style;
 
-export default function AddTask({ onOpen, refreshData }) {
+export default function AddTask({ onOpen, refreshData, setAlertMessage }) {
   const initData = { title: "", tag: "", content: "", pinned: false };
   const [noteData, setNoteData] = useState(initData);
 
@@ -19,24 +20,27 @@ export default function AddTask({ onOpen, refreshData }) {
   // handle note add
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { title, tag, content } = noteData;
-
-      if (title && tag && content) {
-        const res = await fetch("http://localhost:3001/notes", {
+    const { title, tag, content } = noteData;
+    if (title && tag && content) {
+      try {
+        const res = await fetch(`${backendURL}/notes`, {
           method: "POST",
           body: JSON.stringify(noteData),
           headers: {
             "content-type": "application/json",
           },
         }).then((e) => e.json());
-      }
+        setAlertMessage(res.message);
 
-      refreshData();
-    } catch (e) {
-      console.log("ERROR IN FETCHING", e.message);
+        refreshData();
+      } catch (e) {
+        console.log("ERROR IN FETCHING", e.message);
+        setAlertMessage(e.message);
+      }
+      onOpen(false);
+      return;
     }
-    onOpen(false);
+    setAlertMessage("Fill all mandatory fields.!");
   };
 
   return (

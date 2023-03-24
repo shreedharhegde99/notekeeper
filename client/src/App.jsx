@@ -4,12 +4,14 @@ import AddTaskBtn from "./components/AddTaskBtn";
 import useFetchData from "./hooks/useFechData";
 import style from "./App.module.css";
 import NoteCard from "./components/NoteCard";
+import UserAlert from "./components/UserAlert";
 const { pageTitle, notesContainer, noteCard, navBtnContainer } = style;
 
 function App() {
   const [openForm, setOpenForm] = useState(false);
   const [page, setPage] = useState(1);
   const [data, getNotes] = useFetchData();
+  const [message, setMessage] = useState("");
 
   const handleOpenForm = (val) => {
     setOpenForm(val);
@@ -17,6 +19,11 @@ function App() {
 
   const refetchNotes = () => {
     getNotes(page);
+  };
+
+  const setAlertMessage = (msg) => {
+    setMessage(msg);
+    setTimeout(() => setMessage(""), 6000);
   };
 
   useEffect(() => {
@@ -45,13 +52,19 @@ function App() {
             className={noteCard}
             note={note}
             refreshData={refetchNotes}
+            setAlertMessage={setAlertMessage}
           />
         ))}
       </div>
 
+      <UserAlert message={message} />
       <AddTaskBtn onOpen={handleOpenForm} />
       {openForm && (
-        <AddTask onOpen={handleOpenForm} refreshData={refetchNotes} />
+        <AddTask
+          onOpen={handleOpenForm}
+          refreshData={refetchNotes}
+          setAlertMessage={setAlertMessage}
+        />
       )}
     </div>
   );

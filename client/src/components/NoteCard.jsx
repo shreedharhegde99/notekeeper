@@ -1,4 +1,5 @@
 import { Fragment, useState } from "react";
+import backendURL from "../network/network";
 import style from "./styles/addTask.module.css";
 import noteStyle from "./styles/note.module.css";
 
@@ -6,7 +7,7 @@ const { noteCard } = noteStyle;
 
 const { addNoteMain, formContainer, addNoteForm } = style;
 
-export default function NoteCard({ note, refreshData }) {
+export default function NoteCard({ note, refreshData, setAlertMessage }) {
   const [editNote, setEditNote] = useState(note);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -27,19 +28,19 @@ export default function NoteCard({ note, refreshData }) {
       const { title, tag, content } = editNote;
 
       if (title && tag && content) {
-        const res = await fetch(" http://localhost:3001/notes", {
+        const res = await fetch(`${backendURL}/notes`, {
           method: "PATCH",
           body: JSON.stringify(editNote),
           headers: {
             "Content-Type": "application/json",
           },
         }).then((e) => e.json());
+        setAlertMessage(res.message);
       }
       refreshData();
     } catch (e) {
-      console
-        .log("ERROR IN FETCHING", e.message)
-        .catch((e) => console.log(e.message));
+      console.log("ERROR IN FETCHING", e.message);
+      setAlertMessage(e.message);
     }
 
     setIsEditOpen(false);
